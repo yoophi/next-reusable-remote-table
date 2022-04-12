@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import TodoListWithSearchForm from "./TodoListWithSearchForm";
 
-const TodoListWidget = () => {
+const TodoListWidget = ({ defaultFilters }) => {
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [filters, setFilters] = useState({ userId: defaultFilters?.userId });
 
   return (
     <div className="border p-2">
@@ -12,8 +13,10 @@ const TodoListWidget = () => {
         <TodoListWithSearchForm
           controlledPageIndex={pageIndex}
           controlledPageSize={pageSize}
+          controlledFilters={filters}
           setPageIndex={setPageIndex}
           setPageSize={setPageSize}
+          setFilters={setFilters}
         />
       </div>
     </div>

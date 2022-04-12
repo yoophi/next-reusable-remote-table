@@ -4,12 +4,16 @@ import { useRoutePagination } from "../features/remote-table/hooks/use-route-pag
 import TodoListWithSearchForm from "../features/todo/components/TodoListWithSearchForm";
 import Layout from "../layouts";
 
-
 const TodoListPage = () => {
   const router = useRouter();
-  const { pageIndex, setPageIndex, pageSize, setPageSize } = useRoutePagination(
-    router.pathname
-  );
+  const {
+    pageIndex,
+    setPageIndex,
+    pageSize,
+    setPageSize,
+    filters,
+    setFilters,
+  } = useRoutePagination(router.pathname);
 
   return (
     <Layout>
@@ -20,8 +24,10 @@ const TodoListPage = () => {
         <TodoListWithSearchForm
           controlledPageIndex={pageIndex}
           controlledPageSize={pageSize}
+          controlledFilters={filters}
           setPageIndex={setPageIndex}
           setPageSize={setPageSize}
+          setFilters={setFilters}
         />
       </div>
     </Layout>
