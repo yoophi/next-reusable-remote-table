@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import React, { useCallback, useMemo } from "react";
-import { usePagination, useSortBy, useTable } from "react-table";
+import { usePagination, useTable } from "react-table";
 
 const RemoteTable = (props) => {
   const {
@@ -10,8 +10,10 @@ const RemoteTable = (props) => {
     controlledPageCount,
     controlledPageIndex,
     controlledPageSize,
+    controlledSortBy,
     setControlledPage,
     setControlledPageSize,
+    setControlledSortBy,
   } = props;
 
   const instance = useTable(
@@ -20,7 +22,6 @@ const RemoteTable = (props) => {
       data: data ?? [],
       initialState: { pageIndex: 0 },
       manualPagination: true,
-      manualSortBy: true,
       pageCount: controlledPageCount,
       useControlledState: (state) => {
         return useMemo(
@@ -33,7 +34,6 @@ const RemoteTable = (props) => {
         );
       },
     },
-    useSortBy,
     usePagination
   );
 
@@ -66,6 +66,32 @@ const RemoteTable = (props) => {
   return (
     <div className="border p-2">
       <div>RemoteTable</div>
+      <hr />
+      <button
+        className="px-3 border border-transparent text-base font-medium text-white bg-gray-800 shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        onClick={() => {
+          setControlledSortBy([{ id: "userId", desc: false }]);
+        }}
+      >
+        sort by UserId
+      </button>
+      <button
+        className="px-3 border border-transparent text-base font-medium text-white bg-gray-800 shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        onClick={() => {
+          setControlledSortBy([{ id: "userId", desc: true }]);
+        }}
+      >
+        sort by UserId Descending
+      </button>
+      <button
+        className="px-3 border border-transparent text-base font-medium text-white bg-gray-800 shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        onClick={() => {
+          setControlledSortBy([]);
+        }}
+      >
+        reset Sort
+      </button>
+      <pre>{JSON.stringify({ controlledSortBy }, null, 2)}</pre>
       <div className="p-4 border">
         <h1 className="text-xl">RemoteTable</h1>
         <table {...getTableProps()}>
@@ -73,19 +99,40 @@ const RemoteTable = (props) => {
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(
-                      column.sortable && column.getSortByToggleProps()
-                    )}
-                  >
+                  <th {...column.getHeaderProps()}>
                     {column.render("Header")}
-                    <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? " 🔽"
-                          : " 🔼"
-                        : ""}
-                    </span>
+                    {column.sortable && (
+                      <>
+                        <button
+                          className="px-1 mr-1 border border-transparent text-base font-medium text-white bg-gray-800 shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                          onClick={() => {
+                            setControlledSortBy([
+                              { id: column.id, desc: false },
+                            ]);
+                          }}
+                        >
+                          A
+                        </button>
+                        <button
+                          className="px-1 mr-1 border border-transparent text-base font-medium text-white bg-gray-800 shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                          onClick={() => {
+                            setControlledSortBy([
+                              { id: column.id, desc: true },
+                            ]);
+                          }}
+                        >
+                          D
+                        </button>
+                        <button
+                          className="px-1 border border-transparent text-base font-medium text-white bg-gray-800 shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                          onClick={() => {
+                            setControlledSortBy([]);
+                          }}
+                        >
+                          X
+                        </button>
+                      </>
+                    )}
                   </th>
                 ))}
               </tr>

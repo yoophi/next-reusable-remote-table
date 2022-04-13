@@ -1,6 +1,14 @@
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 
+const parseSortBy = (sortByString) => {
+  if (!sortByString) {
+    return [];
+  }
+  const [key, direction] = sortByString.split(":");
+  return [{ id: key, desc: direction == "desc" }];
+};
+
 export const useRoutePagination = (
   pathname,
   defaultPageSize = 10,
@@ -51,6 +59,28 @@ export const useRoutePagination = (
     [router, pathname]
   );
 
+  const sortBy = useMemo(() => {
+    return parseSortBy(router.query.sort);
+  }, [router]);
+
+  const setSortBy = useCallback(
+    (sortBy) => {
+      /**
+       * sortBy = [] or [{ id: 'userId', desc: true}]
+       */
+      let sort = "";
+      if (sortBy.length > 0) {
+        sort = `${sortBy[0].id}:${sortBy[0].desc ? "desc" : "asc"}`;
+      }
+
+      void router.push({
+        pathname,
+        query: { ...router.query, page: 0, sort },
+      });
+    },
+    [router, pathname]
+  );
+
   return {
     pageIndex,
     setPageIndex,
@@ -58,5 +88,7 @@ export const useRoutePagination = (
     setPageSize,
     filters,
     setFilters,
+    sortBy,
+    setSortBy,
   };
 };
