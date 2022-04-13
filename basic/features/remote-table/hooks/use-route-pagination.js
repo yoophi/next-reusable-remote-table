@@ -28,16 +28,6 @@ export const useRoutePagination = (
     [router, pathname]
   );
 
-  const setUserId = useCallback(
-    (user_id) => {
-      void router.push({
-        pathname,
-        query: { ...router.query, page: 0, user_id },
-      });
-    },
-    [router, pathname]
-  );
-
   const pageIndex = useMemo(() => Number(router.query.page ?? 0), [router]);
   const pageSize = useMemo(
     () => Number(router.query.per_page ?? defaultPageSize),
