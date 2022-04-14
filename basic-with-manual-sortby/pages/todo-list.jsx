@@ -7,6 +7,7 @@ import Layout from "../layouts";
 const TodoListPage = () => {
   const router = useRouter();
   const {
+    isReady,
     pageIndex,
     setPageIndex,
     pageSize,
@@ -16,7 +17,6 @@ const TodoListPage = () => {
     sortBy,
     setSortBy,
   } = useRoutePagination(router.pathname);
-  console.log("TodoListPage", { setSortBy });
 
   return (
     <Layout>
@@ -24,16 +24,18 @@ const TodoListPage = () => {
         <h1 className="text-2xl pb-2 border-b">TodoList</h1>
       </div>
       <div>
-        <TodoListWithSearchForm
-          controlledPageIndex={pageIndex}
-          controlledPageSize={pageSize}
-          controlledFilters={filters}
-          controlledSortBy={sortBy}
-          setPageIndex={setPageIndex}
-          setPageSize={setPageSize}
-          setFilters={setFilters}
-          setSortBy={setSortBy}
-        />
+        {isReady && (
+          <TodoListWithSearchForm
+            controlledPageIndex={pageIndex}
+            controlledPageSize={pageSize}
+            controlledFilters={filters}
+            controlledSortBy={sortBy}
+            setPageIndex={setPageIndex}
+            setPageSize={setPageSize}
+            setFilters={setFilters}
+            setSortBy={setSortBy}
+          />
+        )}
       </div>
     </Layout>
   );

@@ -18,12 +18,17 @@ export const useRoutePagination = (
   defaultUserId = ""
 ) => {
   const router = useRouter();
+  const isReady = router.isReady;
 
   const setPageIndex = useCallback(
     (page) => {
+      const params = { ...router.query };
+      if (page) {
+        params.page = page;
+      }
       void router.push({
         pathname,
-        query: { ...router.query, page },
+        query: params,
       });
     },
     [router, pathname]
@@ -31,9 +36,13 @@ export const useRoutePagination = (
 
   const setPageSize = useCallback(
     (per_page) => {
+      const params = { ...router.query };
+      if (per_page) {
+        params.per_page = per_page;
+      }
       void router.push({
         pathname,
-        query: { ...router.query, page: 0, per_page },
+        query: params,
       });
     },
     [router, pathname]
@@ -77,16 +86,19 @@ export const useRoutePagination = (
           .map((el) => `${el.id}:${el.desc ? "desc" : "asc"}`)
           .join(",");
       }
+      const params = { ...router.query };
+      params.sort = sort;
 
       void router.push({
         pathname,
-        query: { ...router.query, page: 0, sort },
+        query: params,
       });
     },
     [router, pathname]
   );
 
   return {
+    isReady,
     pageIndex,
     setPageIndex,
     pageSize,

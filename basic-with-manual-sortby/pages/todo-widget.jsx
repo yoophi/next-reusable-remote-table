@@ -13,6 +13,12 @@ const TodoListWidgetPage = () => {
         <div>
           <TodoListWidget defaultFilters={{ userId: 10 }} />
         </div>
+        <div>
+          <TodoListWidget
+            defaultFilters={{}}
+            defaultSortBy={[{ id: "title", desc: false }]}
+          />
+        </div>
       </div>
     </Layout>
   );

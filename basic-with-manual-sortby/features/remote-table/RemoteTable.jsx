@@ -20,7 +20,7 @@ const RemoteTable = (props) => {
     {
       columns,
       data: data ?? [],
-      initialState: { pageIndex: 0 },
+      initialState: { pageIndex: 0, sortBy: controlledSortBy },
       manualPagination: true,
       manualSortBy: true,
       pageCount: controlledPageCount,
@@ -31,7 +31,7 @@ const RemoteTable = (props) => {
             pageIndex: controlledPageIndex ?? 0,
             pageSize: controlledPageSize ?? 10,
           }),
-          [state, controlledPageIndex, controlledPageSize]
+          [state]
         );
       },
     },
@@ -67,13 +67,13 @@ const RemoteTable = (props) => {
 
   useEffect(() => {
     setControlledSortBy(sortBy);
-  }, [setControlledSortBy, sortBy]);
+  }, [sortBy]);
 
   return (
     <div className="border p-2">
       <div>RemoteTable</div>
       <hr />
-      {/* <button
+      <button
         className="px-3 border border-transparent text-base font-medium text-white bg-gray-800 shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         onClick={() => {
           setControlledSortBy([{ id: "userId", desc: false }]);
@@ -96,9 +96,8 @@ const RemoteTable = (props) => {
         }}
       >
         reset Sort
-      </button> */}
-      <pre>{JSON.stringify({ controlledSortBy }, null, 2)}</pre>
-      <pre>{JSON.stringify({ state }, null, 2)}</pre>
+      </button>
+      <pre>{JSON.stringify({ controlledSortBy, sortBy }, null, 2)}</pre>
       <div className="p-4 border">
         <h1 className="text-xl">RemoteTable</h1>
         <table {...getTableProps()}>
