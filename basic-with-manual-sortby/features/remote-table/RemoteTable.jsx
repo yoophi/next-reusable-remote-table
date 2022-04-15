@@ -31,7 +31,7 @@ const RemoteTable = (props) => {
             pageIndex: controlledPageIndex ?? 0,
             pageSize: controlledPageSize ?? 10,
           }),
-          [state]
+          [state, controlledPageIndex, controlledPageSize]
         );
       },
     },
